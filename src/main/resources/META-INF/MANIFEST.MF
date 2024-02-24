@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
 Class-Path: ./classes
-Main-Class: carts.CartMainApplication
+Main-Class: carts.adapters.api.CartMainApplication
 Built-By: dudenessbcn
 Build-Jdk: 11.0.22

@@ -1,4 +1,4 @@
-package carts;
+package carts.adapters.api;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
@@ -8,10 +8,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @Slf4j
 @SpringBootApplication
-@ComponentScan({
-    "carts.adapters.api.CartController",
-    "carts.adapter.api.CartServiceImpl"
-})
+//@ComponentScan({
+//    "carts.adapters.api.CartController",
+//    "carts.adapter.api.CartServiceImpl"
+//})
 @EnableScheduling
 public class CartMainApplication {
 

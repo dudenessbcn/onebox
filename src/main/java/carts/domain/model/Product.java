@@ -2,8 +2,10 @@ package carts.domain.model;
 
 
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public final class Product {
 
   private final long id;

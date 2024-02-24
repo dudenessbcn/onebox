@@ -1,6 +1,7 @@
 package carts.domain.ports;
 
 import carts.domain.model.Cart;
+import java.util.List;
 
 public interface CartService {
 
@@ -9,5 +10,7 @@ public interface CartService {
   Cart getById(long id);
 
   void delete(long id);
+
+  List<Cart> getAll();
 
 }

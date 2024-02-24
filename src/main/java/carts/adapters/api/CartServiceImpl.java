@@ -3,18 +3,18 @@ package carts.adapters.api;
 
 import carts.domain.model.Cart;
 import carts.domain.ports.CartService;
+import java.util.List;
 import java.util.Objects;
 import lombok.Getter;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 @Getter
-@Component
+@Service
 public class CartServiceImpl implements CartService {
 
-  private final CartRepository storage;
-
-  public CartServiceImpl(CartRepository storage) {
-    this.storage = storage;
-  }
+  @Autowired
+  private CartRepository storage;
 
   public Cart save(Cart cart) {
     boolean cartExists = Objects.nonNull(storage.findById(cart.getId()));
@@ -28,6 +28,11 @@ public class CartServiceImpl implements CartService {
   @Override
   public void delete(long id) {
     storage.remove(id);
+  }
+
+  @Override
+  public List<Cart> getAll() {
+    return storage.getCarts();
   }
 
 }
