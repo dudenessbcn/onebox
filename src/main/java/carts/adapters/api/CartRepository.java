@@ -1,11 +1,9 @@
 package carts.adapters.api;
 
-import carts.domain.exceptions.UnsupportedCartOperationException;
 import carts.domain.model.Cart;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
