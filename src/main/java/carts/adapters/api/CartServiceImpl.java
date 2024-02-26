@@ -1,6 +1,7 @@
 package carts.adapters.api;
 
 
+import carts.domain.exceptions.UnsupportedCartOperationException;
 import carts.domain.model.Cart;
 import carts.domain.ports.CartService;
 import java.util.List;
@@ -14,25 +15,30 @@ import org.springframework.stereotype.Service;
 public class CartServiceImpl implements CartService {
 
   @Autowired
-  private CartRepository storage;
+  private CartRepository repository;
 
   public Cart save(Cart cart) {
-    boolean cartExists = Objects.nonNull(storage.findById(cart.getId()));
-    return cartExists ? storage.addProducts(cart) : storage.addCart(cart);
+    boolean cartExists = Objects.nonNull(repository.findById(cart.getId()));
+    return cartExists ? repository.addProducts(cart) : repository.addCart(cart);
   }
 
   public Cart getById(long id) {
-    return storage.findById(id);
+    return repository.findById(id);
   }
 
   @Override
-  public void delete(long id) {
-    storage.remove(id);
+  public void delete(long id) throws UnsupportedCartOperationException {
+    Cart cart = repository.findById(id);
+    if (Objects.nonNull(cart)) {
+      repository.remove(cart.getId());
+    } else {
+      throw new UnsupportedCartOperationException();
+    }
   }
 
   @Override
   public List<Cart> getAll() {
-    return storage.getCarts();
+    return repository.getCarts();
   }
 
 }

@@ -5,12 +5,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import lombok.Getter;
 import lombok.ToString;
 
-@Getter
 @ToString
 public class Cart {
 
   private static volatile Cart INSTANCE;
 
+  @Getter
   private final long id;
   private final CopyOnWriteArrayList<Product> products;
 
@@ -30,6 +30,10 @@ public class Cart {
       }
       return INSTANCE;
     }
+  }
+
+  public CopyOnWriteArrayList<Product> getProducts() {
+    return new CopyOnWriteArrayList<>(products);
   }
 
 }

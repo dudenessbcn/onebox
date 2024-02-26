@@ -1,5 +1,6 @@
 package carts.adapters.api;
 
+import carts.domain.exceptions.UnsupportedCartOperationException;
 import carts.domain.model.Cart;
 import carts.domain.ports.CartService;
 import java.util.List;
@@ -42,26 +43,27 @@ public class CartController {
     return new ResponseEntity<List<Cart>>(carts, HttpStatus.OK);
   }
 
-@PostMapping("/")
-public ResponseEntity<Cart> saveCart(@RequestBody Cart cart) {
-  Cart savedCart = cartService.save(cart);
-  return Objects.nonNull(savedCart) ?
-      new ResponseEntity<Cart>(savedCart, HttpStatus.CREATED)
-      : new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-}
+  @PostMapping("/")
+  public ResponseEntity<Cart> saveCart(@RequestBody Cart cart) throws UnsupportedCartOperationException {
+    Cart savedCart = cartService.save(cart);
+    return Objects.nonNull(savedCart) ?
+        new ResponseEntity<Cart>(savedCart, HttpStatus.CREATED)
+        : new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
 
-@PutMapping("/{id}")
-public ResponseEntity<Cart> updateCart(@PathVariable("id") long id, @RequestBody Cart cart) {
-  Cart notUpdated = Cart.getInstance(id, cart.getProducts());
-  Cart updatedCart = cartService.save(notUpdated);
-  return Objects.nonNull(updatedCart) ?
-      new ResponseEntity<Cart>(updatedCart, HttpStatus.CREATED)
-      : new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-}
+  @PutMapping("/{id}")
+  public ResponseEntity<Cart> updateCart(@PathVariable("id") long id,
+      @RequestBody Cart cart) throws UnsupportedCartOperationException {
+    Cart notUpdated = Cart.getInstance(id, cart.getProducts());
+    Cart updatedCart = cartService.save(notUpdated);
+    return Objects.nonNull(updatedCart) ?
+        new ResponseEntity<Cart>(updatedCart, HttpStatus.CREATED)
+        : new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
 
-@DeleteMapping("/{id}")
-public ResponseEntity<Cart> deleteCart(@PathVariable("id") long id) {
-  cartService.delete(id);
-  return new ResponseEntity<>(null, HttpStatus.OK);
-}
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Cart> deleteCart(@PathVariable("id") long id) throws UnsupportedCartOperationException {
+    cartService.delete(id);
+    return new ResponseEntity<>(null, HttpStatus.OK);
+  }
 }
