@@ -3,11 +3,10 @@ package carts.adapters.api;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
 
-import carts.domain.exceptions.UnsupportedCartOperationException;
 import carts.domain.model.Cart;
 import carts.domain.model.Product;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,7 +24,7 @@ class CartServiceImplTest {
   private CartRepository repository;
 
   @Test
-  void givenCartAddCartShouldBeSaved() throws UnsupportedCartOperationException {
+  void givenCartAddCartShouldBeSaved() {
     Cart cart = buildCart();
 
     doReturn(null).when(repository).findById(cart.getId());
@@ -37,7 +36,7 @@ class CartServiceImplTest {
   }
 
   @Test
-  void givenExistingCartAddProductsShouldBeUpdated() throws UnsupportedCartOperationException {
+  void givenExistingCartAddProductsShouldBeUpdated() {
     Cart cart = buildCart();
 
     doReturn(cart).when(repository).findById(cart.getId());
@@ -60,9 +59,10 @@ class CartServiceImplTest {
   }
 
   @Test
-  void givenCartIdDeleteShouldNotThrowException() throws UnsupportedCartOperationException {
+  void givenCartIdDeleteShouldDeleteCart() {
     long id = 1L;
-
+    Cart cart = buildCart();
+    doReturn(cart).when(repository).findById(id);
     doNothing().when(repository).remove(id);
 
     assertDoesNotThrow(() -> sut.delete(id));
@@ -70,14 +70,13 @@ class CartServiceImplTest {
   }
 
   @Test
-  void givenCartIdDeleteShouldThrowException() throws UnsupportedCartOperationException {
+  void givenEmptyCartIdDeleteShouldNotDelete() {
     long id = 1L;
-
     doReturn(null).when(repository).findById(id);
 
-    assertThrows(UnsupportedCartOperationException.class, () -> sut.delete(id));
-
+    assertDoesNotThrow(() -> sut.delete(id));
   }
+
 
   private static Cart buildCart() {
     CopyOnWriteArrayList<Product> products = new CopyOnWriteArrayList<>();

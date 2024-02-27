@@ -1,10 +1,8 @@
 package carts.adapters.api;
 
 
-import carts.domain.exceptions.UnsupportedCartOperationException;
 import carts.domain.model.Cart;
 import carts.domain.ports.CartService;
-import java.util.List;
 import java.util.Objects;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,18 +25,12 @@ public class CartServiceImpl implements CartService {
   }
 
   @Override
-  public void delete(long id) throws UnsupportedCartOperationException {
+  public void delete(long id) {
     Cart cart = repository.findById(id);
     if (Objects.nonNull(cart)) {
       repository.remove(cart.getId());
-    } else {
-      throw new UnsupportedCartOperationException();
     }
   }
 
-  @Override
-  public List<Cart> getAll() {
-    return repository.getCarts();
-  }
 
 }

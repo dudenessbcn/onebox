@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,7 @@ public class CartRepository {
 
   private static final Long TEN_MINUTES = 60000L * 10;
   private final CopyOnWriteArrayList<Cart> carts;
+  @Getter
   private final ConcurrentHashMap<Long, Long> dispensableCarts;
 
   public CartRepository() {
@@ -51,7 +53,7 @@ public class CartRepository {
 
   }
 
-  @Scheduled(fixedRate = 20, initialDelay = 20, timeUnit = TimeUnit.SECONDS)
+  @Scheduled(fixedRate = 5, initialDelay = 5, timeUnit = TimeUnit.SECONDS)
   public void scheduledRemove() {
     for (Iterator<Entry<Long, Long>> it =
         dispensableCarts.entrySet().iterator(); it.hasNext(); ) {
@@ -65,12 +67,5 @@ public class CartRepository {
     }
   }
 
-  public CopyOnWriteArrayList<Cart> getCarts() {
-    log.info("Get all carts, {}", carts.toString());
-    return new CopyOnWriteArrayList<Cart>(carts);
-  }
 
-  public ConcurrentHashMap<Long, Long> getDispensableCarts() {
-    return new ConcurrentHashMap<Long, Long>(dispensableCarts);
-  }
 }
